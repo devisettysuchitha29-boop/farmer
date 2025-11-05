@@ -1,0 +1,75 @@
+const readline = require("readline");
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+let products = [];
+let farmers = new Set();
+let buyers = new Set();
+
+function mainMenu() {
+  console.log("\n🌱 AgriConnect Platform");
+  console.log("1. Admin  2. Farmer  3. Buyer  4. Exit");
+  rl.question("Enter choice: ", choice => {
+    switch (choice) {
+      case "1": adminMenu(); break;
+      case "2": farmerMenu(); break;
+      case "3": buyerMenu(); break;
+      case "4": console.log("Goodbye!"); rl.close(); break;
+      default: console.log("Invalid choice!"); mainMenu();
+    }
+  });
+}
+
+function adminMenu() {
+  console.log("\n👨‍💼 Admin Dashboard");
+  console.log("Farmers:", Array.from(farmers));
+  console.log("Buyers:", Array.from(buyers));
+  mainMenu();
+}
+
+function farmerMenu() {
+  rl.question("Enter your name: ", farmer => {
+    rl.question("Product name: ", name => {
+      rl.question("Category: ", category => {
+        rl.question("Price (₹): ", price => {
+          products.push({ farmer, name, category, price: parseFloat(price), feedback: [] });
+          farmers.add(farmer);
+          console.log("✅ Product added successfully!");
+          mainMenu();
+        });
+      });
+    });
+  });
+}
+
+function buyerMenu() {
+  rl.question("Enter your name: ", buyer => {
+    buyers.add(buyer);
+    if (products.length === 0) {
+      console.log("No products available.");
+      return mainMenu();
+    }
+
+    console.log("\nAvailable Products:");
+    products.forEach((p, i) => console.log(`${i + 1}. ${p.name} - ₹${p.price} (${p.category}) | Farmer: ${p.farmer}`));
+    rl.question("Select product number to order: ", num => {
+      const idx = parseInt(num) - 1;
+      if (idx >= 0 && idx < products.length) {
+        const p = products[idx];
+        console.log(`✅ ${buyer} ordered ${p.name}`);
+        rl.question("Leave feedback: ", fb => {
+          if (fb) p.feedback.push(`${buyer}: ${fb}`);
+          mainMenu();
+        });
+      } else {
+        console.log("❌ Invalid selection");
+        mainMenu();
+      }
+    });
+  });
+}
+
+mainMenu();
