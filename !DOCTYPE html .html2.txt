@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AgriConnect — SRS / Requirements (FEDF-PS01)</title>
+  <style>
+    :root{
+      --green-1:#2e7d32;
+      --green-2:#43a047;
+      --muted:#666;
+      --card:#fff;
+      --bg:#f6faf6;
+      --glass: rgba(255,255,255,0.8);
+      --maxw:1100px;
+    }
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, var(--bg), #eef7ee);
+      color:#222;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:24px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .container{
+      width:100%;
+      max-width:var(--maxw);
+      background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(250,250,250,0.98));
+      border-radius:12px;
+      box-shadow:0 8px 30px rgba(0,0,0,0.08);
+      overflow:hidden;
+    }
+
+    header{
+      background:linear-gradient(90deg,var(--green-1),var(--green-2));
+      color:#fff;
+      padding:20px 30px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    header h1{
+      margin:0;
+      font-size:1.2rem;
+      letter-spacing:0.6px;
+    }
+    header .meta { font-size:0.9rem; opacity:0.95 }
+
+    .toolbar{
+      padding:16px 30px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      border-bottom:1px solid rgba(0,0,0,0.04);
+      background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+    }
+    .btn{
+      border: none;
+      padding:10px 14px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+      background:var(--green-1);
+      color:white;
+      box-shadow:0 4px 12px rgba(46,125,50,0.15);
+    }
+    .btn.secondary{
+      background:#fff;
+      color:var(--green-1);
+      border:1px solid rgba(46,125,50,0.08);
+      box-shadow:none;
+      font-weight:600;
+    }
+    .search {
+      margin-left:auto;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      border-radius:8px;
+      padding:6px;
+      background:rgba(0,0,0,0.03);
+    }
+    .search input{
+      border:none;
+      background:transparent;
+      padding:8px;
+      outline:none;
+      width:220px;
+    }
+
+    main{
+      padding:28px 30px;
+    }
+
+    /* grid layout */
+    .layout{
+      display:grid;
+      grid-template-columns: 320px 1fr;
+      gap:24px;
+    }
+
+    /* sidebar */
+    .sidebar{
+      position:sticky;
+      top:24px;
+      align-self:start;
+      background:var(--card);
+      padding:18px;
+      border-radius:10px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.04);
+      height:fit-content;
+    }
+    .toc h3{margin:0 0 8px 0;color:var(--green-1)}
+    .toc ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+    .toc a{ text-decoration:none; color:var(--green-1); font-weight:600; }
+    .badge{display:inline-block;padding:6px 8px;border-radius:999px;background:#eef8ee;color:var(--green-1);font-size:0.85rem;margin-top:8px}
+
+    /* content */
+    .card{
+      background:var(--card);
+      padding:20px;
+      border-radius:10px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.04);
+      margin-bottom:18px;
+    }
+    h2{color:var(--green-1); margin-bottom:8px}
+    h3{margin:14px 0 6px 0;color:#153d14}
+    p{color:var(--muted); line-height:1.55}
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    th,td{padding:10px;border:1px solid rgba(0,0,0,0.05);text-align:left}
+    th{background:#fbfffB;color:#123a12}
+
+    /* collapsible sections */
+    .section-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      cursor:pointer;
+      user-select:none;
+      padding:8px;
+      border-radius:8px;
+    }
+    .section-header:hover{background:rgba(0,0,0,0.02)}
+    .chev{transition:transform 0.18s}
+    .collapsed .chev{transform:rotate(-90deg)}
+
+    pre{
+      background:#f4f7f4;padding:12px;border-radius:8px;overflow:auto;font-size:0.95rem;
+    }
+
+    footer{
+      padding:18px 30px;
+      text-align:center;
+      color:var(--muted);
+      border-top:1px dashed rgba(0,0,0,0.04);
+      font-size:0.95rem;
+    }
+
+    /* responsive */
+    @media(max-width:980px){
+      .layout{grid-template-columns: 1fr}
+      .search input{width:120px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main">
+    <header>
+      <div>
+        <h1>AgriConnect — SRS / Requirements (FEDF-PS01)</h1>
+        <div class="meta">Support farmers to produce & sell value-added agricultural products</div>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:center">
+        <div class="badge">Version 1.0</div>
+        <div style="font-size:0.9rem;color:rgba(255,255,255,0.95)">Date: 2025-11-06</div>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <button class="btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+      <button class="btn secondary" id="toggleAll">Toggle All Sections</button>
+
+      <div class="search" title="Filter sections (client-side)">
+        <svg width="14" height="14" viewBox="0 0 24 24" style="opacity:0.6"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16a6.471 6.471 0 004.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM10 14a4 4 0 110-8 4 4 0 010 8z"/></svg>
+        <input type="search" id="filter" placeholder="Filter by keyword (e.g. farmer, inventory)" />
+      </div>
+    </div>
+
+    <main>
+      <div class="layout">
+        <!-- SIDEBAR / TOC -->
+        <aside class="sidebar" aria-label="Table of contents">
+          <div class="toc">
+            <h3>Contents</h3>
+            <ul>
+              <li><a href="#project">Project</a></li>
+              <li><a href="#objectives">Objectives</a></li>
+              <li><a href="#scope">Scope</a></li>
+              <li><a href="#functional">Functional Req's</a></li>
+              <li><a href="#nonfunctional">Non-Functional Req's</a></li>
+              <li><a href="#software">Software / Hardware</a></li>
+              <li><a href="#ui">UI Requirements</a></li>
+              <li><a href="#usecase">Use Cases</a></li>
+              <li><a href="#outcomes">Outcomes</a></li>
+              <li><a href="#future">Future Enhancements</a></li>
+            </ul>
+            <div style="margin-top:12px">
+              <div class="badge" title="Stakeholders">Stakeholders: Admin • Farmer • Buyer • Logistics • Support</div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- CONTENT -->
+        <section aria-live="polite">
+          <!-- Project -->
+          <article id="project" class="card collapsible">
+            <div class="section-header" onclick="toggle(this)">
+              <div>
+                <h2>Project Title & Problem Statement</h2>
+                <div style="font-size:0.95rem;color:var(--muted)">FEDF-PS01 — AgriConnect</div>
+              </div>
+              <div class="chev">▶</div>
+            </div>
+
+            <div class="content" style="margin-top:12px">
+              <p><strong>Problem:</strong> Small and marginal farmers struggle to capture value from raw crops. There is limited access to markets, limited know-how for value addition (processed foods, handicrafts), and low bargaining power. AgriConnect aims to enable farmers to create and sell value-added agricultural products while connecting them to global buyers through a secure, easy-to-use web platform.</p>
+            </div>
+          </article>
+
+          <!-- Objectives -->
+          <article id="objectives" class="card collapsible">
+            <div class="section-header" onclick="toggle(this)">
+              <div>
+                <h2>Objectives</h2>
+                <div style="font-size:0.95rem;color:var(--muted)">Primary goals of the platform</div>
+              </div>
+              <div class="chev">▶</div>
+            </div>
+
+            <div class="content" style="margin-top:12px">
+              <ul>
+                <li>Empower farmers to produce and list value-added agricultural products.</li>
+                <li>Create a digital marketplace connecting farmers with domestic and global buyers.</li>
+                <li>Provide role-based dashboards (Admin, Farmer, Buyer) for operations.</li>
+                <li>Capture and display product feedback and sales metrics to support decisions.</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Scope -->
+          <article id="scope" class="card collapsible">
+            <div class="section-header" onclick="toggle(this)">
+              <div>
+                <h2>Scope</h2>
+                <div style="font-size:0.95rem;color:var(--muted)">What the system will and will not cover</div>
+              </div>
+              <div class="chev">▶</div>
+            </div>
+
+            <div class="content" style="margin-top:12px">
+              <p><strong>Included:</strong> User registration/login, product listing & management, order placement (placeholder for payment), feedback/reviews, role dashboards, search & filtering, responsive UI, basic notifications, admin moderation.</p>
+              <p><strong>Excluded (Phase 1):</strong> Full payment gateway integration (can be simulated), automated logistics or delivery integration, complex AI pricing — intended for future phases.</p>
+            </div>
+          </article>
+
+          <!-- Functional Requirements -->
+          <article id="functional" class="card collapsible">
+            <div class="section-header" onclick="toggle(this)">
+              <div>
+                <h2>Functional Requirements</h2>
+                <div style="font-size:0.95rem;color:var(--muted)">Actions the system must perform</div>
+              </div>
+              <div class="chev">▶</div>
+            </div>
+
+            <div class="content" style="margin-top:12px">
+
+              <h3>Admin Module</h3>
+              <ul>
+                <li>FR-A1: Admin login with secure authentication (email + password + role verification).</li>
+                <li>FR-A2: View, approve, suspend, or delete user accounts (farmers & buyers).</li>
+                <li>FR-A3: Monitor transactions, view platform-wide analytics (sales, product categories, top sellers).</li>
+                <li>FR-A4: Manage site content (category list, banners, announcements).</li>
+              </ul>
+
+              <h3>Farmer Module</h3>
+              <ul>
+                <li>FR-F1: Farmer registration with verification fields (farm name, location, ID proof upload optional).</li>
+                <li>FR-F2: Add / edit / remove product listings with fields: title, description, category, price, stock quantity, images, packaging details.</li>
+                <li>FR-F3: Inventory management and low-stock alerts.</li>
+                <li>FR-F4: View order requests, accept/decline orders, update order status.</li>
+                <li>FR-F5: View and respond to buyer messages and feedback.</li>
+              </ul>
+
+              <h3>Buyer Module</h3>
+              <ul>
+                <li>FR-B1: Buyer registration and profile management.</li>
+                <li>FR-B2: Browse & filter products by category, farmer, price range, rating.</li>
+                <li>FR-B3: Place orders (order creation flow; payments simulated in Phase 1).</li>
+                <li>FR-B4: Rate and review purchased products; view order history and invoices.</li>
+              </ul>
+
+              <h3>Common & Cross-Cutting</h3>
+              <ul>
+                <li>FR-C1: Search bar with autocomplete for products & farmers.</li>
+                <li>FR-C2: Responsive UI suitable for desktops and mobile devices.</li>
+                <li>FR-C3: Notification system (in-app) for key events: new order, low stock, new review.</li>
+                <li>FR-C4: Contact/Help form to reach support; basic ticketing for admin review.</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Non-functional -->
+          <article id="nonfunctional" class="card collapsible">
+            <div class="section-header" onclick="toggle(this)">
+              <div>
+                <h2>Non-Functional Requirements</h2>
+                <div style="font-size:0.95rem;color:var(--muted)">Quality attributes</div>
+              </div>
+              <div class="chev">▶</div>
+            </div>
+
+            <div class="content" style="margin-top:12px">
+              <table>
+                <thead><tr><th>Category</th><th>Requirement</th></tr></thead>
+                <tbody>
+                  <tr><td>Performance</td><td>Support at least 500 concurrent users; typical page load < 2s over broadband.</td></tr>
+                  <tr><td>Security</td><td>Password hashing, HTTPS, basic role-based access control (RBAC), input validation to prevent XSS/SQL injection.</td></tr>
+                  <tr><td>Usability</td><td>Simple UX, accessible forms, mobile-first responsive layout.</td></tr>
+                  <tr><td>Reliability</td><td>99% availability target for production; transactional integrity for orders.</td></tr>
+                  <tr><td>Scalability</td><td>Modular architecture to add roles, features, or migrate DB to distributed cluster.</td></tr>
+                  <tr><td>Maintainability</td><td>Well-documented codebase, modular components, unit tests for core flows.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <!-- Software / Hardware -->
+          <article id="software" class="card collapsible">
+            <div class="section-header" onclick="toggle(this)">
+              <div>
+                <h2>Software & Hardware Requirements</h2>
+                <div style="font-size:0.95rem;color:var(--muted)">Suggested stack & infra</div>
+              </div>
+              <div class="chev">▶</div>
+            </div>
+
+            <div class="content" style="margin-top:12px">
+              <h3>Suggested Software Stack</h3>
+              <ul>
+                <li>Frontend: HTML5, CSS3, JavaScript (vanilla or framework: React / Vue).</li>
+                <li>Backend: Node.js (Express) / Python (Flask/Django) / Java (Spring Boot).</li>
+                <li>Database: MySQL / PostgreSQL (relational) or MongoDB (document).</li>
+                <li>Hosting: Cloud (AWS / GCP / Azure) or PaaS (Render / Heroku).</li>
+                <li>Optional: Firebase for authentication & storage in early MVP.</li>
+              </ul>
+
+              <h3>Hardware</h3>
+              <p>Development machines: modern laptops with 4+ GB RAM (8GB recommended). Server: cloud VM or container with at least 2 vCPU and 4GB RAM for initial deployment.</p>
+            </div>
+          </article>
+
+          <!-- UI Requirements -->
+          <article id="ui" class="card collapsible">
+            <div class="section-header" onclick="toggle(this)">
+              <div>
+                <h2>User Interface Requirements</h2>
+                <div style="font-size:0.95rem;color:var(--muted)">Key UI elements & flows</div>
+              </div>
+              <div class="chev">▶</div>
+            </div>
+
+            <div class="content" style="margin-top:12px">
+              <ul>
+                <li>Homepage: brief intro, featured products, call-to-action for farmers to register.</li>
+                <li>Role-specific dashboards showing KPIs: sales, orders, stock levels, reviews.</li>
+                <li>Product listing page with gallery, detailed view, and seller profile.</li>
+                <li>Forms: registration (farmer/buyer), product add/edit (image uploads), contact form.</li>
+                <li>Accessibility: labels for inputs, keyboard navigable, adequate contrast.</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Use cases -->
+          <article id="usecase" class="card collapsible">
+            <div class="section-header" onclick="toggle(this)">
+              <div>
+                <h2>Use Cases (Conceptual)</h2>
+                <div style="font-size:0.95rem;color:var(--muted)">Main actor interactions</div>
+              </div>
+              <div class="chev">▶</div>
+            </div>
+
+            <div class="content" style="margin-top:12px">
+              <h3>Actor: Farmer</h3>
+              <p>Login → Add Product → Manage Inventory → Respond to Orders → View Analytics</p>
+
+              <h3>Actor: Buyer</h3>
+              <p>Search Product → View Product → Place Order → Provide Feedback → View Order History</p>
+
+              <h3>Actor: Admin</h3>
+              <p>Login → Approve Users → Moderate Listings → View Platform Reports → Manage Support Tickets</p>
+            </div>
+          </article>
+
+          <!-- Outcomes -->
+          <article id="outcomes" class="card collapsible">
+            <div class="section-header" onclick="toggle(this)">
+              <div>
+                <h2>Expected Outcomes</h2>
+                <div style="font-size:0.95rem;color:var(--muted)">What success looks like</div>
+              </div>
+              <div class="chev">▶</div>
+            </div>
+
+            <div class="content" style="margin-top:12px">
+              <ul>
+                <li>Increased farmer revenue through better market access and value addition.</li>
+                <li>Higher buyer trust with product reviews and seller transparency.</li>
+                <li>Admin oversight ensuring safety and platform standards.</li>
+                <li>Measurable growth in listings, transactions, and positive reviews month-over-month.</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Future -->
+          <article id="future" class="card collapsible">
+            <div class="section-header" onclick="toggle(this)">
+              <div>
+                <h2>Future Enhancements (Roadmap)</h2>
+                <div style="font-size:0.95rem;color:var(--muted)">Planned features for later phases</div>
+              </div>
+              <div class="chev">▶</div>
+            </div>
+
+            <div class="content" style="margin-top:12px">
+              <ol>
+                <li>Payment gateway integration (Razorpay / Stripe / PayPal).</li>
+                <li>Logistics & delivery partner integration with tracking.</li>
+                <li>AI-driven pricing & demand forecasting for farmers.</li>
+                <li>Mobile apps (Android / iOS) and offline sync for low-connectivity areas.</li>
+                <li>Micro-loan / finance partner integration to support farmer scaling.</li>
+              </ol>
+            </div>
+          </article>
+
+          <!-- Appendix: quick summary -->
+          <article class="card">
+            <h3>Appendix: Quick Summary</h3>
+            <p><strong>Roles:</strong> Admin, Farmer, Buyer.</p>
+            <p><strong>Core flows:</strong> Register → List product → Buyer orders → Farmer fulfils → Buyer reviews.</p>
+            <pre>
+// Minimal API endpoints (example)
+POST /api/auth/register   // register user (farmer/buyer)
+POST /api/auth/login      // login
+GET  /api/products        // list / search products
+POST /api/products        // create product (farmer)
+PUT  /api/products/:id    // update product
+POST /api/orders          // buyer places order
+GET  /api/admin/reports   // admin analytics
+            </pre>
+          </article>
+
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      AgriConnect • SRS v1.0 — Prepared for FEDF-PS01 • © 2025
+    </footer>
+  </div>
+
+  <script>
+    // collapsible helpers
+    document.querySelectorAll('.collapsible .content').forEach((el)=>{
+      el.style.display = 'block'; // default expanded
+    });
+
+    function toggle(header){
+      const article = header.closest('article');
+      const content = article.querySelector('.content');
+      const chev = header.querySelector('.chev');
+      if(!article.classList.contains('collapsed')){
+        // collapse
+        content.style.display = 'none';
+        article.classList.add('collapsed');
+        chev.textContent = '▶';
+      } else {
+        // expand
+        content.style.display = 'block';
+        article.classList.remove('collapsed');
+        chev.textContent = '▶';
+      }
+    }
+
+    // toggle all (open/close)
+    let allCollapsed = false;
+    document.getElementById('toggleAll').addEventListener('click',()=>{
+      document.querySelectorAll('.collapsible').forEach((a)=>{
+        const content = a.querySelector('.content');
+        const chev = a.querySelector('.chev');
+        if(!allCollapsed){
+          content.style.display = 'none';
+          a.classList.add('collapsed');
+          chev.textContent = '▶';
+        } else {
+          content.style.display = 'block';
+          a.classList.remove('collapsed');
+          chev.textContent = '▶';
+        }
+      });
+      allCollapsed = !allCollapsed;
+      document.getElementById('toggleAll').textContent = allCollapsed ? 'Expand All Sections' : 'Collapse All Sections';
+    });
+
+    // simple client-side filter
+    document.getElementById('filter').addEventListener('input', function(){
+      const q = this.value.trim().toLowerCase();
+      document.querySelectorAll('article.card').forEach((article)=>{
+        const text = article.innerText.toLowerCase();
+        if(q === '' || text.includes(q)){
+          article.style.display = 'block';
+        } else {
+          article.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
