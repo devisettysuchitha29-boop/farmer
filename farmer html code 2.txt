@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgriConnect - Value-Added Agriculture Platform</title>
+
+  <style>
+    /* ---------- General Styles ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f6faf6;
+      color: #333;
+      scroll-behavior: smooth;
+    }
+
+    header {
+      background: linear-gradient(90deg, #2e7d32, #43a047);
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 {
+      font-size: 2rem;
+      letter-spacing: 1px;
+    }
+
+    nav {
+      background-color: #388e3c;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 15px 20px;
+      transition: background-color 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #1b5e20;
+      border-radius: 5px;
+    }
+
+    section {
+      padding: 50px 10%;
+    }
+
+    h2 {
+      text-align: center;
+      color: #1b5e20;
+      margin-bottom: 20px;
+    }
+
+    p {
+      text-align: center;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    /* ---------- Roles Section ---------- */
+    .roles {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .role-card {
+      background-color: white;
+      width: 300px;
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .role-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .role-card h3 {
+      margin-bottom: 10px;
+      color: #2e7d32;
+    }
+
+    /* ---------- Product Section ---------- */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .product-card {
+      background-color: white;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .product-card img {
+      width: 100%;
+      border-radius: 10px;
+      height: 180px;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #1b5e20;
+    }
+
+    /* ---------- Contact Section ---------- */
+    form {
+      max-width: 600px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input, textarea {
+      padding: 12px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    textarea {
+      resize: none;
+      height: 120px;
+    }
+
+    footer {
+      background-color: #2e7d32;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .roles {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🌱 AgriConnect - Empowering Farmers through Technology</h1>
+</header>
+
+<nav>
+  <a href="#about">About</a>
+  <a href="#roles">Roles</a>
+  <a href="#products">Products</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<!-- About Section -->
+<section id="about">
+  <h2>About AgriConnect</h2>
+  <p>
+    AgriConnect helps farmers transform their crops into value-added products like jams,
+    pickles, oils, and handicrafts. The platform connects rural producers with global
+    buyers to boost entrepreneurship and sustainable growth.
+  </p>
+</section>
+
+<!-- Roles Section -->
+<section id="roles">
+  <h2>User Roles</h2>
+  <div class="roles">
+    <div class="role-card">
+      <h3>👨‍💼 Admin</h3>
+      <p>Manages users, reviews transactions, and maintains platform integrity.</p>
+      <button class="btn" onclick="showMessage('Admin login portal coming soon!')">Admin Portal</button>
+    </div>
+
+    <div class="role-card">
+      <h3>👨‍🌾 Farmer</h3>
+      <p>Lists products, manages inventory, and engages directly with buyers.</p>
+      <button class="btn" onclick="showMessage('Farmer dashboard coming soon!')">Farmer Dashboard</button>
+    </div>
+
+    <div class="role-card">
+      <h3>🛒 Buyer</h3>
+      <p>Explores value-added products, places orders, and provides feedback.</p>
+      <button class="btn" onclick="showMessage('Buyer marketplace coming soon!')">Buyer Shop</button>
+    </div>
+  </div>
+</section>
+
+<!-- Products Section -->
+<section id="products">
+  <h2>Featured Products</h2>
+  <div class="product-grid">
+    <div class="product-card">
+      <img src="https://source.unsplash.com/400x300/?jam" alt="Fruit Jam">
+      <h3>Organic Mango Jam</h3>
+      <p>Made from fresh farm-grown mangoes.</p>
+      <button class="btn">Buy Now</button>
+    </div>
+
+    <div class="product-card">
+      <img src="https://source.unsplash.com/400x300/?oil" alt="Coconut Oil">
+      <h3>Cold Pressed Coconut Oil</h3>
+      <p>Pure and chemical-free, extracted from local farms.</p>
+      <button class="btn">Buy Now</button>
+    </div>
+
+    <div class="product-card">
+      <img src="https://source.unsplash.com/400x300/?handicraft" alt="Handicraft">
+      <h3>Bamboo Handicrafts</h3>
+      <p>Eco-friendly crafts made by rural artisans.</p>
+      <button class="btn">Buy Now</button>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact">
+  <h2>Contact Us</h2>
+  <form onsubmit="submitForm(event)">
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Your Email" required>
+    <textarea id="message" placeholder="Your Message..." required></textarea>
+    <button class="btn" type="submit">Send Message</button>
+  </form>
+</section>
+
+<footer>
+  <p>© 2025 AgriConnect | Building Sustainable Rural Entrepreneurship 🌾</p>
+</footer>
+
+<!-- ---------- JavaScript ---------- -->
+<script>
+  function showMessage(msg) {
+    alert(msg);
+  }
+
+  function submitForm(e) {
+    e.preventDefault();
+    alert("Thank you for contacting AgriConnect! We'll reach out soon.");
+    e.target.reset();
+  }
+</script>
+
+</body>
+</html>
